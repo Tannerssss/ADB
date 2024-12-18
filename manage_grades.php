@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['UserLogin']) || $_SESSION['Role'] !== 'admin') {
+if (!isset($_SESSION['UserLogin']) || $_SESSION['Access'] !== 'admin') {
     header("Location: login.php"); 
     exit();
 }
@@ -17,8 +17,9 @@ if (isset($_GET['student_id'])) {
 
     $sql_grades = "SELECT subjects.name, grades.grade, grades.subject_id 
                    FROM grades 
-                   JOIN subjects ON grades.subject_id = subjects.id 
+                   JOIN subjects ON grades.subject_id = subject.id 
                    WHERE grades.student_id = ?";
+                   
     $stmt_grades = $con->prepare($sql_grades);
     $stmt_grades->bind_param('i', $student_id);
     $stmt_grades->execute();

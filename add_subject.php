@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['UserLogin']) || $_SESSION['Role'] !== 'admin') {
+if (!isset($_SESSION['UserLogin']) || $_SESSION['Access'] !== 'admin') {
     header("Location: login.php"); 
     exit();
 }
@@ -10,7 +10,7 @@ include_once("connection.php");
 $con = connection();
 
 if (isset($_POST['add_subject'])) {
-    $subject_name = $_POST['subject_name'];
+    $subject_name = $_POST['name'];
 
     $sql = "INSERT INTO subjects (name) VALUES (?)";
     $stmt = $con->prepare($sql);
@@ -28,7 +28,7 @@ if (isset($_POST['add_subject'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add New Subject</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="add_subject.css">
 </head>
 <body>
     <h2>Add New Subject</h2>

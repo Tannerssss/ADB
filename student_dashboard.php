@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['UserLogin']) || $_SESSION['Role'] !== 'student') {
+if (!isset($_SESSION['UserLogin']) || $_SESSION['Access'] !== 'student') {
     header("Location: login.php");
     exit();
 }
@@ -9,8 +9,8 @@ if (!isset($_SESSION['UserLogin']) || $_SESSION['Role'] !== 'student') {
 include_once("connection.php");
 $con = connection();
 
-if (isset($_SESSION['student_id'])) {
-    $userID = $_SESSION['student_id']; 
+if (isset($_SESSION['UserLogin'])) {
+    $userID = $_SESSION['UserLogin']; 
 } else {
     echo "<p class='message warning'>Student ID not found. Please login again.</p>";
     exit();
@@ -35,7 +35,7 @@ if ($student === null) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="student_dashboard.css">
 </head>
 <body>
     <h2>Student Dashboard</h2>

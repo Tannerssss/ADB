@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['UserLogin']) || $_SESSION['Role'] !== 'admin') {
+if (!isset($_SESSION['UserLogin']) || $_SESSION['Access'] !== 'admin') {
     header("Location: login.php"); 
     exit();
 }
@@ -35,7 +35,9 @@ $result_subjects = $con->query($sql_subjects);
             <th>Last Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Address</th>
             <th>Actions</th>
+
         </tr>
         <?php while ($student = $result_students->fetch_assoc()) { ?>
             <tr>
@@ -43,6 +45,8 @@ $result_subjects = $con->query($sql_subjects);
                 <td><?php echo $student['last_name']; ?></td>
                 <td><?php echo $student['email']; ?></td>
                 <td><?php echo $student['phone']; ?></td>
+                <td><?php echo $student['address']; ?></td>
+
                 <td>
                     <a href="edit_student.php?id=<?php echo $student['id']; ?>">Edit</a> | 
                     <a href="delete_student.php?id=<?php echo $student['id']; ?>">Delete</a> |
@@ -62,14 +66,17 @@ $result_subjects = $con->query($sql_subjects);
             <tr>
                 <td><?php echo $subject['name']; ?></td>
                 <td>
-                    <a href="edit_subject.php?id=<?php echo $subject['id']; ?>">Edit</a> | 
-                    <a href="delete_subject.php?id=<?php echo $subject['id']; ?>">Delete</a>
+                    <a href="edit_subject.php?subject_id=<?php echo $subject['subject_id']; ?>">Edit</a> | 
+                    <a href="delete_subject.php?subject_id=<?php echo $subject['subject_id']; ?>">Delete</a>
                 </td>
             </tr>
         <?php } ?>
     </table>
 
-    <a href="add_student.php">Add New Student</a><br>
+    <a href="add.php">Add New Student</a><br>
     <a href="add_subject.php">Add New Subject</a>
+
+    <br><br>
+    <a href="javascript:history.back()" class="back-button">Back</a>
 </body>
 </html>
