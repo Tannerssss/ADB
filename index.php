@@ -10,11 +10,11 @@ if(isset($_SESSION['UserLogin'])){
     echo "<div class='message info'>Welcome Guest</div>";
 }
 
-include_once("connections/connection.php");
+include_once("connection.php");
 
 $con = connection();
 
-$sql = "SELECT * FROM student_list ORDER BY id DESC";
+$sql = "SELECT * FROM students ORDER BY id DESC";
 $students = $con->query($sql) or die ($con->error);
 $row = $students->fetch_assoc();
 
@@ -26,7 +26,7 @@ $row = $students->fetch_assoc();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Management Sytem</title>
-    <link rel = "stylesheet" href="CSS/style.css">
+    <link rel = "stylesheet" href="style.css">
 
 
 </head>
@@ -52,7 +52,7 @@ $row = $students->fetch_assoc();
 
             <a href="login.php">Login</a>
         <?php } ?>
-        <a href="add.php">Add New</a>
+        <a href="add.php">Add Student</a>
     </div> 
 
 

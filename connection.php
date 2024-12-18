@@ -3,11 +3,12 @@
     function connection(){
         $host = "localhost";
         $username = "root";
-        $password = "12345";
-        $database = "student_system";
+        $password = "";
+        $database = "student_management";
+        $port = 3307;
         
         
-        $con = new mysqli($host, $username, $password, $database);
+        $con = new mysqli($host, $username, $password, $database, $port);
         
         if($con->connect_error){
                 echo $con->connect_error;

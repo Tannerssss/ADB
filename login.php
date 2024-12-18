@@ -1,31 +1,41 @@
 <?php
-if (!isset($_SESSION)){
-    session_start();
-}
+session_start();
 
-
-include_once("connections/connection.php");
+include_once("connection.php");
 $con = connection();
 
-if(isset($_POST['login'])){
+if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM student_users WHERE username = '$username' AND password = '$password'";
-    $user = $con->query($sql) or die ($con->error);
-    $row = $user->fetch_assoc();
-    $total = $user->num_rows;
+    $sql = "SELECT * FROM users WHERE username = ?";
+    $stmt = $con->prepare($sql);
+    $stmt->bind_param('s', $username);  
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-    if($total > 0){
-        $_SESSION['UserLogin'] = $row ['username'];
-        $_SESSION['Access'] = $row['access'];
-        echo header ("Location: index.php");
-    }else{
-        echo "<div class='message warning'> No User Found.</div>";
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+
+        if ($password === $row['password']) {  
+            $_SESSION['UserLogin'] = $row['username'];
+            $_SESSION['Access'] = $row['access']; 
+
+            
+            if ($row['access'] === 'admin') {
+                header("Location: admin_dashboard.php");
+                exit();
+            } elseif ($row['access'] === 'student') {
+                header("Location: student_dashboard.php");
+                exit();
+            }
+        } else {
+            echo "<div class='message warning'>Invalid password.</div>";
+        }
+    } else {
+        echo "<div class='message warning'>No user found with this username.</div>";
     }
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -33,40 +43,36 @@ if(isset($_POST['login'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Management Sytem</title>
-    <link rel = "stylesheet" href="CSS/style.css">
-
-
+    <title>Student Management System</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body id ="formlogin">
+<body id="formlogin">
   <div class="login-container">
     <br/>
 
-   <h2>Login Page</h2>
-   <br/>
-   <div class="form-logo">
-        <img src="img/psuu.png" alt="">
+    <h2>Login Page</h2>
+    <br/>
+    <div class="form-logo">
+        <img src="psuu.png" alt="">
     </div>
 
-   <form action="" method="post">
+    <form action="" method="post">
 
         <div class="form-element">
             <label>Username</label>
-            <input type="text" name="username" id = "username" autocomplete="off" 
-            placeholder="Enter User" required>
+            <input type="text" name="username" id="username" autocomplete="off" 
+                   placeholder="Enter Username" required>
         </div>
 
         <div class="form-element">
             <label>Password</label>
             <input type="password" name="password" id="password" 
-            placeholder="Enter pasword" required>
+                   placeholder="Enter Password" required>
         </div>
 
-
-   <button type = "submit" name = "login">Login</button>
-   </form>
+        <button type="submit" name="login">Login</button>
+    </form>
   
-</div>
-   
+  </div>
 </body>
 </html>

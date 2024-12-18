@@ -12,11 +12,14 @@ $id = $_GET['ID'];
 
 if(isset($_POST['submit'])){
 
+    $student_id = $_POST['student_id'];
     $fname = $_POST['firstname'];
     $lname = $_POST['lastname'];
-    $gender = $_POST['gender'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $address = $_POST['address'];
 
-        $sql = "UPDATE student_list SET first_name = '$fname', last_name = '$lname', gender = '$gender' WHERE id = '$id' ";
+        $sql = "UPDATE students SET student_id = '$student_id', first_name = '$fname', last_name = '$lname', email = '$email', phone = '$phone', address = '$$address' , WHERE id = '$id' ";
 
     $con->query($sql) or die ($con->error);
 
@@ -32,7 +35,7 @@ if(isset($_POST['submit'])){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Management Sytem</title>
-    <link rel = "stylesheet" href="CSS/style.css">
+    <link rel = "stylesheet" href="style.css">
 
 
 </head>
@@ -40,17 +43,23 @@ if(isset($_POST['submit'])){
    <div class="form-container">
     <form action="" method="post">
 
+        <label>Student ID</label>
+        <input type ="text" name = "student_id" id = "student_id" required placeholder="Enter Student ID">    
+
         <label>First Name</label>
         <input type ="text" name="firstname" id="firstname" value="<?php echo $row['first_name'];?>">
 
         <label>Last Name</label>
         <input type ="text" name ="lastname" id = "lastname" value="<?php echo $row['last_name'];?>">
 
-        <label>Gender</label>
-        <select name = "gender" id="gender">
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select>
+        <label>Email</label>
+        <input type ="text" name = "email" id = "email" required placeholder="Enter Email">
+
+        <label>Phone Number</label>
+        <input type ="text" name = "phone" id = "phone" required placeholder="Enter Phone Number">
+
+        <label>Address</label>
+        <input type ="text" name = "address" id = "address" required placeholder="Enter Address">
 
 
         <input type="submit" name="submit" value="Update">
